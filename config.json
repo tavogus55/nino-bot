@@ -1,0 +1,34 @@
+{
+  "DPT": {
+    "account": {
+      "username": "",
+      "password": ""
+    },
+    "url": {
+    "base": "https://www.gw.dpt-inc.co.jp/ni/niware",
+    "home": "/portal/",
+    "expense": "/expense/",
+    "workflow": "/workflow/",
+    "mail": "/pmail/"
+    },
+    "sleep_time": 1
+  },
+  "NTT_billing": {
+    "login_info": {
+      "url": "https://webbilling.ntt-finance.co.jp/mem/a0101/init",
+      "username": "",
+      "password": "",
+      "customer_ID": ""
+    },
+    "payment_info": {
+      "first_name": "",
+      "last_name": "",
+      "card_number": "",
+      "card_exp_month": "",
+      "card_exp_year": ,
+      "card_sec_code": ""
+
+    }
+
+  }
+}
