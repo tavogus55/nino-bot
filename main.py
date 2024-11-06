@@ -27,8 +27,9 @@ async def on_message(message):
     if 'dptmail' in message.content:
         await message.channel.send('S..ure! give me a second')
         CONFIG = load_config('config.json')
+        RASPBERRYPI_MODE = CONFIG['RaspberryPi']
         SMART_CONNECTOR = SmartConnector(CONFIG['DPT'])
-        unopenedEmailsNumber = SMART_CONNECTOR.getUnreadEmails()
+        unopenedEmailsNumber = SMART_CONNECTOR.getUnreadEmails(RASPBERRYPI_MODE)
         await message.channel.send('You have ' + str(unopenedEmailsNumber) + ' new emails')
 
     if 'payntt' in message.content:

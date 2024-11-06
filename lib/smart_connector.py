@@ -1,6 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+
 import time
 from datetime import date
 
@@ -10,6 +13,7 @@ class SmartConnector:
         self.account_config = self.config['account']
         self.url_config = self.config['url']
         self.sleep_time = self.config['sleep_time']
+        self.raspbeery = self.config['sleep_time']
 
     def logIn(self, driver):
         account_username = self.account_config['username']
@@ -31,8 +35,19 @@ class SmartConnector:
 
         return driver
 
-    def getUnreadEmails(self):
+    def getUnreadEmails(self, raspberrypi_mode):
         initialized_driver = webdriver.Chrome()
+
+        if raspberrypi_mode:
+            chrome_service = Service("/usr/bin/chromedriver")
+            chrome_options = Options()
+            chrome_options.binary_location = "/usr/bin/chromium-browser"
+            chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--no-sandbox")
+            chrome_options.add_argument("--disable-dev-shm-usage")
+
+            initialized_driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+
         driver = self.logIn(initialized_driver)
 
         url_base = self.url_config['base']
