@@ -30,5 +30,6 @@
 
     }
   },
-  "RaspberryPi": false
+  "RaspberryPi": false,
+  "token": ""
 }

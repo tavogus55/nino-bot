@@ -52,5 +52,6 @@ async def on_message(message):
         else:
             print('Error getting joke: {0}'.format(response.status_code))
 
-
+CONFIG = load_config('config.json')
+token = CONFIG['token']
 client.run('')
