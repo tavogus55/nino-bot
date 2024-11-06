@@ -54,4 +54,4 @@ async def on_message(message):
 
 CONFIG = load_config('config.json')
 token = CONFIG['token']
-client.run('')
+client.run(token)
