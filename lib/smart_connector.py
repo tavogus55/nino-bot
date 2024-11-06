@@ -36,7 +36,8 @@ class SmartConnector:
         return driver
 
     def getUnreadEmails(self, raspberrypi_mode):
-        initialized_driver = webdriver.Chrome()
+
+        initialized_driver = None
 
         if raspberrypi_mode:
             chrome_service = Service("/usr/bin/chromedriver")
@@ -47,6 +48,8 @@ class SmartConnector:
             chrome_options.add_argument("--disable-dev-shm-usage")
 
             initialized_driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+        else:
+            initialized_driver = webdriver.Chrome()
 
         driver = self.logIn(initialized_driver)
 
