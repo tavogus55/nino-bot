@@ -21,6 +21,7 @@ async def send_dptmail_status():
     RASPBERRYPI_MODE = CONFIG['RaspberryPi']
     channel_id = CONFIG['channel_id']  # Add the channel ID to config.json
     channel = client.get_channel(channel_id)
+    user_id = CONFIG['user_id']
 
     while not client.is_closed():
         now = datetime.now()
@@ -36,10 +37,14 @@ async def send_dptmail_status():
 
         # Perform the dptmail task
         unopenedEmailsNumber = SMART_CONNECTOR.getUnreadEmails(RASPBERRYPI_MODE)
-        if channel:
-            await channel.send('You have ' + str(unopenedEmailsNumber) + ' new emails')
+        if unopenedEmailsNumber > 0:
+            message = f'<@{user_id}> You have {unopenedEmailsNumber} new emails!'
+            if channel:
+                await channel.send(message)
+            else:
+                print("Channel not found or not configured.")
         else:
-            print("Channel not found or not configured.")
+            print("No new emails.")
 
 @client.event
 async def on_ready():

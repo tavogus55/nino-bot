@@ -31,5 +31,7 @@
     }
   },
   "RaspberryPi": false,
-  "token": ""
+  "token": "",
+  "channel_id": false,
+  "user_id": false
 }
