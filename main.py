@@ -5,12 +5,41 @@ client = discord.Client(intents=intents)
 from lib.smart_connector import SmartConnector
 from lib.ntt_connector import NTTConnector
 import json
-
+from datetime import datetime, timedelta  # For time calculations
+import asyncio  # For scheduling tasks
 
 def load_config(filename):
     with open(filename, encoding='utf-8') as config_file:
         config = json.load(config_file)
     return config
+
+async def send_dptmail_status():
+    """Sends dptmail status at scheduled times."""
+    await client.wait_until_ready()  # Ensures the bot is logged in
+    CONFIG = load_config('config.json')
+    SMART_CONNECTOR = SmartConnector(CONFIG['DPT'])
+    RASPBERRYPI_MODE = CONFIG['RaspberryPi']
+    channel_id = CONFIG['channel_id']  # Add the channel ID to config.json
+    channel = client.get_channel(channel_id)
+
+    while not client.is_closed():
+        now = datetime.now()
+        # Schedule times (8 AM, 12 PM, 6 PM)
+        schedule_times = [8, 12, 18]
+        next_run = min(
+            (datetime(now.year, now.month, now.day, t) for t in schedule_times if t > now.hour),
+            default=datetime(now.year, now.month, now.day + 1, schedule_times[0])
+        )
+        # Calculate the wait time until the next run
+        wait_seconds = (next_run - now).total_seconds()
+        await asyncio.sleep(wait_seconds)
+
+        # Perform the dptmail task
+        unopenedEmailsNumber = SMART_CONNECTOR.getUnreadEmails(RASPBERRYPI_MODE)
+        if channel:
+            await channel.send('You have ' + str(unopenedEmailsNumber) + ' new emails')
+        else:
+            print("Channel not found or not configured.")
 
 @client.event
 async def on_ready():
