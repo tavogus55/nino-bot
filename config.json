@@ -11,6 +11,14 @@
     "workflow": "/workflow/",
     "mail": "/pmail/"
     },
+    "expensesFormValues": {
+      "destinationValue": "",
+      "trainAmount": "",
+      "departurePlace": "",
+      "arrivalPlace": "",
+      "destinationPlace": "",
+      "memoText": ""
+    },
     "sleep_time": 1
   },
   "NTT_billing": {

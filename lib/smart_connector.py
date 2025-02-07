@@ -145,8 +145,20 @@ class SmartConnector:
         input("Press enter after you submit")
 
 
-    def inputExpenses(self):
-        initialized_driver = webdriver.Chrome()
+    def inputExpenses(self, raspberrypi_mode):
+
+        if raspberrypi_mode:
+            chrome_service = Service("/usr/bin/chromedriver")
+            chrome_options = Options()
+            chrome_options.binary_location = "/usr/bin/chromium-browser"
+            chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--no-sandbox")
+            chrome_options.add_argument("--disable-dev-shm-usage")
+
+            initialized_driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+        else:
+            initialized_driver = webdriver.Chrome()
+
         driver = self.logIn(initialized_driver)
 
         expenses_form_values_config = self.config['expensesFormValues']
@@ -173,16 +185,16 @@ class SmartConnector:
         time.sleep(self.sleep_time)
 
         expenses_input_destination = driver.find_element(By.XPATH,
-                                                         "/html/body/div[3]/div[2]/div/div[2]/div[1]/table/tbody/tr/td[1]/div/select")
+                                                         "/html/body/div[4]/div[2]/div/div[2]/div[1]/table/tbody/tr/td[1]/div/select")
         expenses_input_amount = driver.find_element(By.XPATH,
-                                                    "/html/body/div[3]/div[2]/div/div[2]/div[2]/div[2]/span/input")
-        expenses_input_departure = driver.find_element(By.XPATH, "/html/body/div[3]/div[2]/div/div[2]/div[4]/input[1]")
-        expenses_input_arrival = driver.find_element(By.XPATH, "/html/body/div[3]/div[2]/div/div[2]/div[4]/input[2]")
+                                                    "/html/body/div[4]/div[2]/div/div[2]/div[2]/div[2]/span/input")
+        expenses_input_departure = driver.find_element(By.XPATH, "/html/body/div[4]/div[2]/div/div[2]/div[4]/input[1]")
+        expenses_input_arrival = driver.find_element(By.XPATH, "/html/body/div[4]/div[2]/div/div[2]/div[4]/input[2]")
         expenses_input_one_two_way = driver.find_element(By.XPATH,
-                                                         "/html/body/div[3]/div[2]/div/div[2]/div[4]/span/span/label/input")
+                                                         "/html/body/div[4]/div[2]/div/div[2]/div[4]/span/span/label/input")
         expenses_input_destination_name = driver.find_element(By.XPATH,
-                                                              "/html/body/div[3]/div[2]/div/div[2]/div[4]/input[3]")
-        expenses_input_memo = driver.find_element(By.XPATH, "/html/body/div[3]/div[2]/div/div[2]/div[7]/input")
+                                                              "/html/body/div[4]/div[2]/div/div[2]/div[4]/input[3]")
+        expenses_input_memo = driver.find_element(By.XPATH, "/html/body/div[4]/div[2]/div/div[2]/div[7]/input")
 
         select_destination = Select(expenses_input_destination)
         select_destination.select_by_value(dest_value)

@@ -66,6 +66,14 @@ async def on_message(message):
         unopenedEmailsNumber = SMART_CONNECTOR.getUnreadEmails(RASPBERRYPI_MODE)
         await message.channel.send('You have ' + str(unopenedEmailsNumber) + ' new emails')
 
+    if 'dptcomm' in message.content:
+        await message.channel.send('S..ure! give me a second')
+        CONFIG = load_config('config.json')
+        RASPBERRYPI_MODE = CONFIG['RaspberryPi']
+        SMART_CONNECTOR = SmartConnector(CONFIG['DPT'])
+        SMART_CONNECTOR.inputExpenses(RASPBERRYPI_MODE)
+        await message.channel.send('Finished uploading commute costs for today')
+
     if 'payntt' in message.content:
         await message.channel.send('S..ure! give me a second')
         CONFIG = load_config('config.json')
